@@ -4,18 +4,6 @@ This is the working area for the individual Internet-Draft, "A Generic Multiplex
 
 * [Editor's Copy](https://damjesus.github.io/babel-multix-id/#go.draft-tardis-gmds.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-tardis-gmds)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-tardis-gmds)
-* [Compare Editor's Copy to Individual Draft](https://damjesus.github.io/babel-multix-id/#go.draft-tardis-gmds.diff)
-
-
-## Contributing
-
-See the
-[guidelines for contributions](https://github.com/damjesus/babel-multix-id/blob//CONTRIBUTING.md).
-
-Contributions can be made by creating pull requests.
-The GitHub interface supports creating pull requests using the Edit (✏) button.
-
 
 ## Command Line Usage
 
