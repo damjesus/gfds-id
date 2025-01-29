@@ -9,18 +9,18 @@ number:
 date: 29/01/2025
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+# area: AREA
+# workgroup: WG Working Group
 keyword:
  - dynamic enviorments
  - swarm systems
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+#  group: WG
+#  type: Working Group
+#  mail: WG@example.com
+#  arch: https://example.com/WG
+  github: "damjesus/babel-multix-id"
+  latest: "https://damjesus.github.io/babel-multix-id/draft-tardis-gmds.html"
 
 author:
  -
