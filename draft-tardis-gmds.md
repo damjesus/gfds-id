@@ -23,7 +23,7 @@ title: "A Generic Multiplexer for Dynamic Systems"
 abbrev: "GMDS"
 category: info
 
-docname: draft-tardis-gmds-00
+docname: draft-tardis-gmds
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date: 29/01/2025
