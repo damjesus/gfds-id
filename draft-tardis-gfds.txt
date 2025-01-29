@@ -2,33 +2,24 @@
 
 
 
-WG Working Group                                       D. A. M. D. Jesus
-Internet-Draft                                                    TaRDIS
-Intended status: Informational                              January 2025
-Expires: 2 August 2025
+Network Working Group                                           D. Jesus
+Internet-Draft                                                 J. Leitão
+Intended status: Standards Track                                  TaRDIS
+Expires: 2 August 2025                                      January 2025
 
 
-               A Generic Multiplexer for Dynamic Systems
-                           draft-tardis-gmds
+  A Generic Framework for Building Dynamic and Scalable Systems (GFDS)
+                        draft-tardis-gfds-latest
 
 Abstract
 
-   TODO Abstract
-
-About This Document
-
-   This note is to be removed before publishing as an RFC.
-
-   The latest revision of this draft can be found at
-   https://example.com/LATEST.  Status information for this document may
-   be found at https://datatracker.ietf.org/doc/draft-tardis/.
-
-   Discussion of this document takes place on the WG Working Group
-   mailing list (mailto:WG@example.com), which is archived at
-   https://example.com/WG.
-
-   Source for this draft and an issue tracker can be found at
-   https://github.com/USER/REPO.
+   Building and managing highly dynamic and heterogenous distributed
+   systems can prove to be quite challenging due to the great complexity
+   and scale of such environments.  This documents specifies a Generic
+   Framework for Building Dynamic and Scalable Systems (GFDS), which
+   composes a reference architecture and execution model for developing
+   and managing these systems while providing high level abstractions to
+   users.
 
 Status of This Memo
 
@@ -65,15 +56,28 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Security Considerations
-   4.  IANA Considerations
-   5.  Normative References
+   3.  Execution Model
+   4.  Architecture
+     4.1.  Event Manager
+     4.2.  Configuration Manager
+     4.3.  Channel Manager
+     4.4.  Security Manager
+   5.  API
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  Implementation Status
+   9.  Normative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
-   TODO Introduction
+   ... When dealing with such systems one must be , such as handling the
+   inter-connection of nodes, tolerating transient faults, or assuring
+   the security of the different participants, which proves the extreme
+   complexity of administrating and validating such systems.
+
+   🔴 *TODO*
 
 2.  Conventions and Definitions
 
@@ -83,15 +87,39 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Security Considerations
+3.  Execution Model
 
-   TODO Security
+4.  Architecture
 
-4.  IANA Considerations
+4.1.  Event Manager
 
-   This document has no IANA actions.
+4.2.  Configuration Manager
 
-5.  Normative References
+4.3.  Channel Manager
+
+4.4.  Security Manager
+
+5.  API
+
+6.  Security Considerations
+
+   (Mandatory chapter)
+
+7.  IANA Considerations
+
+   (Mandatory chapter)
+
+8.  Implementation Status
+
+9.  Normative References
+
+   [BCP190]   Best Current Practice 190,
+              <https://www.rfc-editor.org/info/bcp190>.
+              At the time of writing, this BCP comprises the following:
+
+              Nottingham, M., "URI Design and Ownership", BCP 190,
+              RFC 8820, DOI 10.17487/RFC8820, June 2020,
+              <https://www.rfc-editor.org/info/rfc8820>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -104,10 +132,13 @@ Table of Contents
 
 Acknowledgments
 
-   TODO acknowledge.
+Authors' Addresses
 
-Author's Address
-
-   Diogo Alexandre Matos de Jesus
+   Diogo Jesus
    TaRDIS
    Email: da.jesus@fct.unl.pt
+
+
+   João Leitão
+   TaRDIS
+   Email: jc.leitao@fct.unl.pt
