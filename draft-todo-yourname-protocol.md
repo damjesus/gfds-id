@@ -19,22 +19,21 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "A Generic Multiplexer for Dynamic Systems"
+abbrev: "GMDS"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-tardis-gmds-00
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
-date:
+date: 29/01/2025
 consensus: true
 v: 3
 area: AREA
 workgroup: WG Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - dynamic enviorments
+ - swarm systems
 venue:
   group: WG
   type: Working Group
@@ -45,9 +44,9 @@ venue:
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Diogo Alexandre Matos de Jesus
+    organization: TaRDIS
+    email: da.jesus@fct.unl.pt
 
 normative:
 
@@ -79,7 +78,6 @@ TODO Security
 # IANA Considerations
 
 This document has no IANA actions.
-
 
 --- back
 
