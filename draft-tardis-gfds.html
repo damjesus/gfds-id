@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>A Generic Framework for Building Dynamic and Scalable Systems (GFDS)</title>
+<title>A Generic Framework for Building Dynamic Distributed Systems (GFDS)</title>
 <meta content="Diogo Jesus" name="author">
 <meta content="João Leitão" name="author">
 <meta content="
-       Building and managing highly dynamic and heterogenous distributed systems can prove to be quite challenging due to the great complexity and scale of such environments.
-This documents specifies a Generic Framework for Building Dynamic and Scalable Systems (GFDS), which composes a reference architecture and execution model for developing and managing these systems while providing high level abstractions to users. 
+       Building  and managing highly dynamic and heterogenous distributed systems  can prove to be quite challenging due to the great complexity and scale of such environments.
+This documents specifies a Generic Framework for Building Dynamic Distributed Systems (GFDS), which composes a reference architecture and execution model for developing and managing these systems while providing high level abstractions to users. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.26.0" name="generator">
 <meta content="distributed systems" name="keyword">
 <meta content="dynamic environments" name="keyword">
 <meta content="swarms" name="keyword">
 <meta content="draft-tardis-gfds-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
+  xml2rfc 3.26.0
     Python 3.12.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Jesus &amp; Leitão</td>
-<td class="center">Expires 2 August 2025</td>
+<td class="center">Expires 4 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1070,7 +1070,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-02">2 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-04">4 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1084,11 +1084,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">A Generic Framework for Building Dynamic and Scalable Systems (GFDS)</h1>
+<h1 id="title">A Generic Framework for Building Dynamic Distributed Systems (GFDS)</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">Building and managing highly dynamic and heterogenous distributed systems can prove to be quite challenging due to the great complexity and scale of such environments.
-This documents specifies a Generic Framework for Building Dynamic and Scalable Systems (GFDS), which composes a reference architecture and execution model for developing and managing these systems while providing high level abstractions to users.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">Building  and managing highly dynamic and heterogenous distributed systems  can prove to be quite challenging due to the great complexity and scale of such environments.
+This documents specifies a Generic Framework for Building Dynamic Distributed Systems (GFDS), which composes a reference architecture and execution model for developing and managing these systems while providing high level abstractions to users.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1139,13 +1139,43 @@ This documents specifies a Generic Framework for Building Dynamic and Scalable S
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-document-structure" class="internal xref">Document Structure</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-execution-model" class="internal xref">Execution Model</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-protocol-anatomy" class="internal xref">Protocol Anatomy</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-protocol-initialization" class="internal xref">Protocol Initialization</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-handlers" class="internal xref">Handlers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-timer-handlers" class="internal xref">Timer-Handlers</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-inter-protocol-handlers" class="internal xref">Inter-Protocol Handlers</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.3">
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="auto internal xref">3.2.3</a>.  <a href="#name-communication-handlers" class="internal xref">Communication Handlers</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-procedures" class="internal xref">Procedures</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-example" class="internal xref">Example</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
@@ -1165,37 +1195,80 @@ This documents specifies a Generic Framework for Building Dynamic and Scalable S
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-api" class="internal xref">API</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-execution-model" class="internal xref">Execution Model</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-api" class="internal xref">API</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
+                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
 </section>
 </div>
-<div id="introduction">
+<div id="overview">
 <section id="section-1">
-      <h2 id="name-introduction">
-<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      <h2 id="name-overview">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
       </h2>
-<p id="section-1-1">... When dealing with such systems one must be , such as handling the inter-connection of nodes, tolerating transient faults, or assuring the security of the different participants, which proves the extreme complexity of administrating and validating such systems.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">🔴 <strong>TODO</strong><a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-1">Building dynamic distributed systems is a complex and challenging task due to the inherent unpredictability and scale of such systems. These systems often consist of multiple nodes that may be located in different geographic regions, and they need to collaborate seamlessly to provide services or process data. The difficulty arises in managing issues like network latency, node failures, variable load distribution, or even node displacement in particular environments. These systems must remain highly available and responsive even when individual components experience failures, which requires robust fault tolerance and self-healing mechanisms.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Maintaining scalability and flexibility as the system evolves proves to be quite endeavouring as well. As demand grows, the system must be able to dynamically scale by adding or removing nodes without disrupting ongoing operations, which requires sophisticated orchestration, auto-reconfiguration and adaptability. Moreover, dealing with the complexities of data consistency, synchronization, and ensuring that all nodes have a coherent view of the system state introduces a level of complexity that can be difficult to manage.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Establishing frameworks and libraries for developing and managing this systems presents significant challenges due to the need to abstract the complexities of distributed architectures and the management of its intricacies, while still providing enough flexibility and control for developers. Developers often require low-level access to certain aspects of the system, such as network management, fault tolerance mechanisms, security guarantees, no name a few, albeit requiring a flexible and fluid programming model, specially for beginners. Frameworks must provide high-level abstractions that simplify common tasks—like managing communication between nodes or handling failures, without hiding critical details that could lead to performance bottlenecks or incorrect system behavior.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">Network libraries such as <span>[<a href="#lib2p" class="cite xref">lib2p</a>]</span>, offer modular and flexible networking framework that provides the building blocks for creating peer-to-peer networks, however come with a steep learning curve and interoperability issues. Alternatively, simulators like <span>[<a href="#PeerSim" class="cite xref">PeerSim</a>]</span> allow developers to quickly develop and test distributed systems, but fail to model realist execution environments.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">In this work we propose a Generic Framework for Building Dynamic Distributed Systems (GFDS) which aims to offer a set of tools, abstractions, and best practices to allow developers to design, deploy, and manage distributed applications that are dynamic, resilient, scalable, and fault-tolerant.
+The framework is composed of an execution model that details and controls the life-cycle of protocols (the base unit in the framework) and an architecture detailing a set of managers to handle the different components and their interactions, while providing common APIs for enabling inter-protocol communication between the different elements in the stack.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<div id="document-structure">
+<section id="section-1.1">
+        <h3 id="name-document-structure">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-document-structure" class="section-name selfRef">Document Structure</a>
+        </h3>
+<p id="section-1.1-1">This document describes a Generic Framework for Building Dynamic Distributed Systems and its structured as follows:<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1.1-2.1">
+            <p id="section-1.1-2.1.1"><a href="#protocol" class="auto internal xref">Section 3</a> describes the base unit of interaction within the framework, the protocol,<a href="#section-1.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.1-2.2">
+            <p id="section-1.1-2.2.1"><a href="#architecture" class="auto internal xref">Section 4</a> describes the framework architecture, its different components and their interaction,<a href="#section-1.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.1-2.3">
+            <p id="section-1.1-2.3.1"><a href="#executionmodel" class="auto internal xref">Section 5</a> details the execution model of the framework and the life cycle of protocols,<a href="#section-1.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.1-2.4">
+            <p id="section-1.1-2.4.1"><a href="#api" class="auto internal xref">Section 6</a> describes the programming interfaces offered by the framework to the application level for inter-protocol communication,<a href="#section-1.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.1-2.5">
+            <p id="section-1.1-2.5.1"><a href="#examples" class="auto internal xref">Section 7</a> provides real world scenarios and examples.<a href="#section-1.1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1209,11 +1282,144 @@ described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</s
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="execution-model">
+<div id="protocol">
 <section id="section-3">
-      <h2 id="name-execution-model">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-execution-model" class="section-name selfRef">Execution Model</a>
-    </h2>
+      <h2 id="name-protocol-anatomy">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-protocol-anatomy" class="section-name selfRef">Protocol Anatomy</a>
+      </h2>
+<p id="section-3-1">The main unit of interaction on the framework is the <em>protocol</em>.
+Protocols embed the logic implemented by the developer and use the abstractions provided by the framework to interact with other protocols being executed locally and to handle communication with other nodes. A process may execute an arbitrary number of protocols concurrently at any given time, and protocols can communicate with each other to cooperate and delegate tasks. Moreover, as it is very common in distributed protocols to capture certain behaviors, protocols can execute actions periodically with the use of timers (e.g., execute a garbage collection function).<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Each protocol is composed by four main concepts that dictate the anatomy and life cycle of a protocol:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-3.1">
+          <p id="section-3-3.1.1"><strong>state</strong> which describes the inner state of the protocol, containing the necessary data and data structures to ensure its correct behavior. The state should be initialized in a specialized <em>init</em> function and can be mutated by means of interaction with other local protocols, through periodic timers that alter the state of the protocol and finally, through communication with other nodes running the some protocol on different machines,<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-3.2">
+          <p id="section-3-3.2.1"><strong>timer handlers</strong> are meant to execute periodic or configured tasks. When the timer expires, a handler is executed with a user defined logic. Additionally, protocols are able to cancel timers if they are no longer relevant (e.g., a timer setup by the lack of an acknowledgement can be canceled if the acknowledged arrived in the mean time),<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-3.3">
+          <p id="section-3-3.3.1"><strong>inter-protocol handlers</strong> are in charge of managing communication between protocols running on the same machine. These handlers are divided into two categories: one-to-one <em>requests/replies</em> and one-to-many <em>notifications</em>.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-3.4">
+          <p id="section-3-3.4.1"><strong>communication handlers</strong> which manages incoming and outgoing communication events through different interfaces. This events can materialized as messages, streams or other generic data transfer methods.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-4">Further details regarding the architecture and functionality of handlers are provided in <a href="#architecture" class="auto internal xref">Section 4</a>.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">With most of the complexity abstracted by the framework, the developer is able to focus on the logic of the protocol, without having to worry about the low-level aspects associated with building large scale systems (e.g., dealing with faults in the network layer).<a href="#section-3-5" class="pilcrow">¶</a></p>
+<div id="protocol-initialization">
+<section id="section-3.1">
+        <h3 id="name-protocol-initialization">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-protocol-initialization" class="section-name selfRef">Protocol Initialization</a>
+        </h3>
+<p id="section-3.1-1">As described previously, each protocol should implement a special <em>init</em> function. This function is meant to be executed
+exactly one time during the life-cycle of the protocol, and has three main purposes:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.1-2">
+<li id="section-3.1-2.1">
+            <p id="section-3.1-2.1.1">Initialize the protocol's state, namely, its control variables, local data structures, etc.,<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-3.1-2.2">
+            <p id="section-3.1-2.2.1">Choose the preferred communication interfaces,<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-3.1-2.3">
+            <p id="section-3.1-2.3.1">Register the different handlers (i.e., timer, inter-protocol and communication handlers).<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<p id="section-3.1-3">A typical protocol initialization would be structured as follows:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.1-4">
+<pre>
+init(properties):
+  // 1 - Setup initial state
+  ...
+
+  // 2 - Communication interface
+  preferences = {TCP, BLE}
+  registerCommunicationInterfaces(preferences)
+
+  // 3 - Handlers
+  registerRequestHandler(BroadcastRequest, uponBroadcastRequest)
+  ...
+
+  registerReplyHandler(DeliverReply, uponDeliverReply)
+  ...
+
+  registerTimerHandler(GarbageCollectTimer, uponGarbageCollectTimer)
+  setupPeriodicTimer(uponGarbageCollectTimer, 100s);
+  ...
+
+  registerNotificationHandler(NeighborNotification, uponNeighborNotification)
+  ...
+
+  registerMessageHandler(BroadcastMessage, uponBroadcastMessage)
+  ...
+</pre><a href="#section-3.1-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="handlers">
+<section id="section-3.2">
+        <h3 id="name-handlers">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-handlers" class="section-name selfRef">Handlers</a>
+        </h3>
+<div id="timer-handlers">
+<section id="section-3.2.1">
+          <h4 id="name-timer-handlers">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-timer-handlers" class="section-name selfRef">Timer-Handlers</a>
+        </h4>
+</section>
+</div>
+<div id="inter-protocol-handlers">
+<section id="section-3.2.2">
+          <h4 id="name-inter-protocol-handlers">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-inter-protocol-handlers" class="section-name selfRef">Inter-Protocol Handlers</a>
+        </h4>
+</section>
+</div>
+<div id="communication-handlers">
+<section id="section-3.2.3">
+          <h4 id="name-communication-handlers">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-communication-handlers" class="section-name selfRef">Communication Handlers</a>
+        </h4>
+</section>
+</div>
+</section>
+</div>
+<div id="procedures">
+<section id="section-3.3">
+        <h3 id="name-procedures">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-procedures" class="section-name selfRef">Procedures</a>
+        </h3>
+<p id="section-3.3-1">Beyond the information defined above, protocols may need to execute procedures. This procedures can range from simple calculations on specific parameters, or inflations on the local state.
+Thus, protocols should be allowed to declare an arbitrary number of procedures that can then be invoked by the protocol among the different handlers defined in the <em>init</em> function.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">The declaration of a procedure should proceed as follows:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3-3">
+<pre>
+procedureName(args):
+  //Perform computations on args
+
+  return result;
+</pre><a href="#section-3.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3-4">A possible usage of a procedure within a protocol:<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3-5">
+<pre>
+calcIntersection (set1, set2):
+  return set1 ^ set2;
+
+uponSetMessage(SetMessage: msg):
+  intersect = this.calcIntersection(this.set, msg.set)
+  this.set= intersect
+  sendReply(SetUpdateReply(this.set), destProto)
+</pre><a href="#section-3.3-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="example">
+<section id="section-3.4">
+        <h3 id="name-example">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-example" class="section-name selfRef">Example</a>
+      </h3>
+</section>
+</div>
 </section>
 </div>
 <div id="architecture">
@@ -1221,89 +1427,127 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-architecture">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
       </h2>
-<div id="event-manager">
+<div id="eventmanager">
 <section id="section-4.1">
         <h3 id="name-event-manager">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-event-manager" class="section-name selfRef">Event Manager</a>
-      </h3>
+        </h3>
 </section>
 </div>
-<div id="configuration-manager">
+<div id="configmanager">
 <section id="section-4.2">
         <h3 id="name-configuration-manager">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-configuration-manager" class="section-name selfRef">Configuration Manager</a>
-      </h3>
+        </h3>
 </section>
 </div>
-<div id="channel-manager">
+<div id="channelmanager">
 <section id="section-4.3">
         <h3 id="name-channel-manager">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-channel-manager" class="section-name selfRef">Channel Manager</a>
-      </h3>
+        </h3>
 </section>
 </div>
-<div id="security-manager">
+<div id="securitymanager">
 <section id="section-4.4">
         <h3 id="name-security-manager">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-security-manager" class="section-name selfRef">Security Manager</a>
-      </h3>
+        </h3>
 </section>
 </div>
+</section>
+</div>
+<div id="executionmodel">
+<section id="section-5">
+      <h2 id="name-execution-model">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-execution-model" class="section-name selfRef">Execution Model</a>
+      </h2>
 </section>
 </div>
 <div id="api">
-<section id="section-5">
+<section id="section-6">
       <h2 id="name-api">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-api" class="section-name selfRef">API</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-api" class="section-name selfRef">API</a>
+    </h2>
+</section>
+</div>
+<div id="examples">
+<section id="section-7">
+      <h2 id="name-examples">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
     </h2>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-6">
+<section id="section-8">
       <h2 id="name-security-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">(Mandatory chapter)<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">(Mandatory chapter)<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-7">
+<section id="section-9">
       <h2 id="name-iana-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">(Mandatory chapter)<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">(Mandatory chapter)<a href="#section-9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-status">
-<section id="section-8">
+<section id="section-10">
       <h2 id="name-implementation-status">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
     </h2>
 </section>
 </div>
-<div id="sec-normative-references">
-<section id="section-9">
-      <h2 id="name-normative-references">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<div id="sec-combined-references">
+<section id="section-11">
+      <h2 id="name-references">
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-11.1">
+        <h3 id="name-normative-references">
+<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="BCP190">[BCP190]</dt>
-      <dd>
+        <dd>
 <div class="refInstance">Best Current Practice 190, <span>&lt;<a href="https://www.rfc-editor.org/info/bcp190">https://www.rfc-editor.org/info/bcp190</a>&gt;</span>.<br><span>At the time of writing, this BCP comprises the following:</span>
 </div>
 <div class="refInstance" id="RFC8820">
-          <span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"URI Design and Ownership"</span>, <span class="seriesInfo">BCP 190</span>, <span class="seriesInfo">RFC 8820</span>, <span class="seriesInfo">DOI 10.17487/RFC8820</span>, <time datetime="2020-06" class="refDate">June 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8820">https://www.rfc-editor.org/info/rfc8820</a>&gt;</span>. </div>
+            <span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"URI Design and Ownership"</span>, <span class="seriesInfo">BCP 190</span>, <span class="seriesInfo">RFC 8820</span>, <span class="seriesInfo">DOI 10.17487/RFC8820</span>, <time datetime="2020-06" class="refDate">June 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8820">https://www.rfc-editor.org/info/rfc8820</a>&gt;</span>. </div>
 </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-11.2">
+        <h3 id="name-informative-references">
+<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="lib2p">[lib2p]</dt>
+        <dd>
+<span class="refTitle">"lib2p"</span>, <span>n.d.</span>, <span>&lt;<a href="https://libp2p.io">https://libp2p.io</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PeerSim">[PeerSim]</dt>
+      <dd>
+<span class="refTitle">"PeerSim"</span>, <span>n.d.</span>, <span>&lt;<a href="https://peersim.sourceforge.net">https://peersim.sourceforge.net</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="acknowledgments">
@@ -1321,6 +1565,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Diogo Jesus</span></div>
 <div dir="auto" class="left"><span class="org">TaRDIS</span></div>
+<div dir="auto" class="left"><span class="street-address">NOVA Laboratory for Computer Science and Informatics (NOVA LINCS)</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:da.jesus@fct.unl.pt" class="email">da.jesus@fct.unl.pt</a>
@@ -1329,6 +1574,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">João Leitão</span></div>
 <div dir="auto" class="left"><span class="org">TaRDIS</span></div>
+<div dir="auto" class="left"><span class="street-address">NOVA Laboratory for Computer Science and Informatics (NOVA LINCS)</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:jc.leitao@fct.unl.pt" class="email">jc.leitao@fct.unl.pt</a>
