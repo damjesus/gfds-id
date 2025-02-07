@@ -76,6 +76,7 @@ This document describes a Generic Framework for Building Dynamic Distributed Sys
 The following abbreviations are used throughout the document:
 
 - API: Application Programming Interface
+- GFDS: Generic Framework for Building Dynamic Distributed Systems
 
 
 # Protocol Anatomy {#protocol}
@@ -144,6 +145,7 @@ def BroadcastData {
   int hopCount,
   Peer origin
 
+  //Omitting serializer
   ...
 }
 
@@ -178,7 +180,7 @@ cancelTimer(long: timerID)
 
 - *setupTimer* setups a timer that will be triggered after a timeout. After the timeout has passed the timer will cease to exist. The function returns an unique timerID that can be used to cancel the timer if needed.
 
-- *periodicSetupTimer* setups a timer that will be triggered periodically (as indicated by the *period* parameter). It is possible to specify a timeout until the first trigger with the *first* parameter. Akin to *setupTimer*, this function also returns an unique timerID.
+- *setupPeriodicSetupTimer* setups a timer that will be triggered periodically (as indicated by the *period* parameter). It is possible to specify a timeout until the first trigger with the *first* parameter. Akin to *setupTimer*, this function also returns an unique timerID.
 
 - *cancelTimer* allows to cancel a timer by passing its unique timerID. This can be extremely helpful in cases where a periodic action is no longer needed, or, for example, if a timeout is no longer needed due to the arrival of data. Protocols should be able to setup and cancel timers during their lifecycle.
 
@@ -412,8 +414,17 @@ def NeighborUpNotification {
 }
 
 def BroadcastData {
-  byte [] data
+  byte [] data,
   long timestamp
+
+  serializer(out):
+    out.writeByteArray(data)
+    out.writeLong(timestamp)
+
+  deserializer(in):
+    data = in.readByteArray()
+    timestamp = in.readLong(in)
+    return BroadcastData(data, timestamp)
 }
 
 def GarbageCollectionTimer {
@@ -478,70 +489,194 @@ propagate(Set<Peer> destinations, BroadcastData: broadcastData):
 ~~~
 
 # Architecture {#architecture}
-<!---
-Diagram que segue o do Babel e adaptador às novas coisas
--->
 
-         +---------------------------------------------------------+
-         | +--------------+   +--------------+   +--------------+  |
-         | |              |   |              |   |              |  |
-         | |  Protocol 1  |   |  Protocol 2  |...|  Protocol N  |  |
-         | |              |   |              |   |              |  |
-         | +--------------+   +--------------+   +--------------+  |
-         |  | ^                | ^                | ^              |
-         |  | | +-------+      | | +-------+      | | +-------+    |
-         |  | | | Event |      | | | Event |      | | | Event |    |
-         |  | | | Queue |      | | | Queue |      | | | Queue |    |
-         |  | | +-------+      | | +-------+      | | +-------+    |
-         |  | |                | |                | |              |
-         |  v |                v |                v |              |
-         | +----------------------------------------------------+  |
-         | |                                        +---------+ |  |
-         | |                        Event           |  Timer  | |  |
-         | |                       Manager          | Manager | |  |
-         | |                                        +---------+ |  |
-         | +----------------------------------------------------+  |
-         |         ^                                    |          |
-         |         |                                    v          |
-         | +----------------------------------------------------+  |
-         | |                                                    |  |
-         | |                    Configuration                   |  |
-         | |                       Manager                      |  |
-         | |                                                    |  |
-         | +----------------------------------------------------+  |
-         |         ^                                    |          |
-         |         |                                    v          |
-         | +----------------------+       +---------------------+  |
-         | |                      | ----> |                     |  |
-         | |       Channel        |       |      Security       |  |
-         | |       Manager        |       |       Manager       |  |
-         | |                      | <---- |                     |  |
-         | +----------------------+       +---------------------+  |
-         +---------------------------------------------------------+
-                        ^ ^                         ^ ^
-                        | |                         | |
-      <-----------------+ |                         | +--------------->
-     <--------------------+                         +------------------>
-                             Incoming and Outgoing
+GFDS aims to simplify the development and management of highly dynamic distributed systems.
+To achieve this, we propose an architecture where great part of the complexity is hidden underneath different layers of abstractions.
+The layers are in charge with different aspects of the system, ranging from inter protocol event dispatch, to guaranteeing secure communication among nodes.
+The architecture overview is depicted in the following diagram:
+
+        +------------------------------------------------------------+
+        |    +------------+    +------------+    +------------+      |
+        |    |            |    |            |    |            |      |
+        |    | Protocol 1 |    | Protocol 2 | .. | Protocol N |      |
+        |    |            |    |            |    |            |      |
+        |    +------------+    +------------+    +------------+      |
+        |     | ^               | ^               | ^                |
+        |     | | +-------+     | | +-------+     | | +-------+      |
+        |     | | | Event |     | | | Event |     | | | Event |      |
+        |  +--|-|-|-------|-----|-|-|-------|-----|-|-|-------|---+  |
+        |  |  | | | Queue |     | | | Queue |     | | | Queue |   |  |
+        |  |  | | +-------+     | | +-------+     | | +-------+   |  |
+        |  |  v |               v |               v |             |  |
+        |  | +-------------------------------------------------+  |  |
+        |  | |                    +-----------+   +---------+  |  |  |
+        |  | |     Event          | Discovery |   |  Timer  |  |  |  |
+        |  | |    Manager         |  Manager  |   | Manager |  |  |  |
+        |  | |                    +-----------+   +---------+  |  |  |
+        |  | +-------------------------------------------------+  |  |
+        |  |       ^  |                            ^  |           |  |
+        |  |       |  v                            |  v           |  |
+        |  | +--------------+              +-------------------+  |  |
+        |  | |              |              |                   |  |  |
+        |  | |              |  --------->  |   Configuration   |  |  |
+        |  | |              |  <---------  |      Manager      |  |  |
+        |  | |              |              |                   |  |  |
+        |  | |    Channel   |              +-------------------+  |  |
+        |  | |    Manager   |              +-------------------+  |  |
+        |  | |              |              |                   |  |  |
+        |  | |              |  --------->  |     Security      |  |  |
+        |  | |              |  <---------  |      Manager      |  |  |
+        |  | |              |              |                   |  |  |
+        |  | +--------------+              +-------------------+  |  |
+        |  |                                                      |  |
+        |  |                        Core                          |  |
+        |  +------------------------------------------------------+  |
+        +------------------------------------------------------------+
+                    | |                                | |
+                    | |                                | |
+        <-----------+ |                                | +------------>
+       <--------------+      Incoming and Outgoing     +--------------->
                                   Connections
 
-## Event Manager {#eventmanager}
-<!---
-Falar sobre a fila e como é que os requests/replies e timers são tratados
--->
+Figure 📍: Framework architecture
 
-## Configuration Manager {#configmanager}
+As stated previously, the base unit of interaction is the protocol. Protocols "live" on top of the stack and developers interact with the framework by specifying protocols, implement their logic and define the proper handlers to receive events (i.e., timers, inter-protocol, etc.) from the framework. This means that, to a developer, the interaction with the other layers is close to none.
+The event manager is in charge of dispatching events to the correct protocols, manage timers, and communicate with the channel manager and configuration manager. Finally, the security manager is responsible for identity management and ensuring secure communication among nodes.
+All of this is encapsulated in what we call the *core*.
+
+The *core* is a centralized competent which coordinates the execution of the different protocols through an event queue. It is separated in different elements, as depicted in Figure ⚠, each responsible for a different task. In the following sub-sections, we specify the different details of each component.
+
+This designs allows the framework to make a clear separation of concerns regarding what a developer as to interact with, and what is managed internally.
+
+## Protocols {#arch-protocol}
+
+Developers interact with the framework by specifying protocols. Protocols have access to common abstractions and APIs that allows to make use of the tools provided by the framework (i.e., explained in {{protocol}}).
+
+Protocols send/receive events to/from the event manager. Each of this events contains information about their type (i.e., request, reply, notification, etc.) and the necessary information to be correctly interpreted by the proper destination (e.g., a request event shall contain the protocol source to the destination can reply to it). Thus, each protocol can be seen as a
+state machine whose state evolves by receiving and processing events.
+
+In order to achieve this, each protocol has an event queue that orders and serializes incoming events. Each protocol should control its life cycle by advancing "time" in a matter it sees fits (i.e., per clock tick, periodically, etc.). In other words, protocols are in charge of pooling their respective queue and process events by their order of arrival and match the respective event with the registered handler.
+Events emitted by the protocol are sent to the event manager who handles their proper processing and forwarding to the correct destination.
+
+From the developer’s point-of-view, a protocol is responsible for defining the callbacks used to process the different events in the queue. This means that developers only worry about registering the proper callbacks for each type and implement their logic, while letting the framework handle event management through interaction with the queue.
+
+Although each protocol contains its own event queue, these are mediated by the event manager, since it is this component responsible to deliver events to each protocol queue, and to forward the events issued by protocols to their correct destination.
+
+The following diagram depicts a protocol overview, divided by two views.
+A *developer view* which specifies the environment and elements to be handled by the developer (i.e., setup callbacks, manage protocol state, etc.), and an *internal view* managed by the framework.
+
+        +-------------------------------------------------------------+
+        |                        ----------+                Developer |
+        |                        |         |                   View   |
+        |                        |  State  |                          |
+        |                        |         |                          |
+        |                        +----------                          |
+        |                                                             |
+        |  +---------+        +---------+      +---------+            |
+        |  | +---------+      | +---------+    | +---------+          |
+        |  | | +---------+    | | +---------+  | | +---------+        |
+        |  | | |     | | |    | | |     | | |  | | |     | | |        |
+        |  +-|-|-----+ | |    +-|-|-----+ | |  +-|-|-----+ | |        |
+        |    +-|-------+ |      +-|-------+ |    +-|-------+ |        |
+        |      |      ...|        |      ...|      |      ...|        |
+        |      +---------+        +---------+      +---------+        |
+        |                                                             |
+        |  Request Handlers   Reply Handlers   Notification Handlers  |
+        |                                                             |
+        |           +---------+          +---------+                  |
+        |           | +---------+        | +---------+                |
+        |           | | +---------+      | | +---------+              |
+        |           | | |     | | |      | | |     | | |              |
+        |           +-|-|-----+ | |      +-|-|-----+ | |              |
+        |             +-|-------+ |        +-|-------+ |              |
+        |               |      ...|          |      ...|              |
+        |               +---------+          +---------+              |
+        |                                                             |
+        |           Timer Handlers       Communication                |
+        |                                   Handlers                  |
+        |                                                             |
+        | <---------------------------------------------------------> |
+        |                      +-------------+                        |
+        |               +----- | +---------+ |                        |
+        |         Poll  |      | |  Event  | |                        |
+        |         queue |      | |  Queue  | |                        |
+        |               +----> | +---------+ |               Internal |
+        |                      +-------------+                 View   |
+        +-------------------------------------------------------------+
+
+
+Figure 📍: Protocol overview
+
+## Event Manager {#arch-eventmanager}
+
+The event manager is one of the main components of the framework and the bridge that establishes the connection between developers (i.e., protocols)
+and the framework inner workings.
+
+This said, the event manager is responsible for the following tasks: exchange events between respective protocols (i.e, *inter-protocol*), forward events coming from the channel and configuration manager to the right protocols, and handle discovery and timers.
+
+Each protocol has an unique identifier associated to it (i.e., a random identifier issued by the framework or passed on as argument during initialization). During protocol registration, the event manager stores the different identifiers in order to forward events to their respective destination. Moreover, since notifications are meant to ensure one-to-many semantics, the event manager has to maintain the mapping of notifications to subscriptions of the corresponding protocols. With this information we are able to guarantee the proper dispatchment of events to their destination.
+
+In the upcoming sub sections we will detail the different sub tasks of the event manager.
+
+### Inter Protocol Interaction
+
+Inter protocol interactions, in other words, communication between protocols in the same machine, is done with the use of requests, replies and notifications. While request and replies guarantee one-to-one semantics, notifications provide one-to-many semantics with the use of subscriptions.
+
+Requests, and their replies, receive a destination protocol. This way, when one of these events is issued, the event manager obtains the protocol from the set of registered protocols and simply adds the event to its queue. This simple but effective design assures that protocols can interact among each other in an efficient way in order to build complexer behaviors through sharing of information.
+
+In contrast, notifications triggers are meant to be delivered to all protocols that are interested in it. To achieve this, the event manager scans its mapping of notifications to subscriptions and transmits to all.
+
+### Timer Manager
+
+The timer manager is a small module that ensures that tasks are triggered at specific time intervals or after a certain amount of time as passed.
+
+Protocols create timers by either invoking *setupTimer* or *setupPeriodicTimer*. When doing this, an event is sent by the corresponding protocol to the event manager, which in turn passes it along to the timer manager. The timer manager stores all the timers issued by the different protocols and is in charge of advancing "time" (e.g., clock ticks). When the timer manager detects that a timer as come to its conclusion, it informs the respective protocol that registered it by placing an event in its queue. Its of note that regular timers and periodical timers work in the same manner internally, with their only difference being that one is removed of the timer manager after its finished, while the other remains active until the end of execution of the program.
+
+Moreover, each timer as an unique identifier associated to it at the moment of creation (i.e., {{protocol-handlers-timer}}). Protocols can use this identifier to cancel timers and remove it from the timer manager. This can be achieved by emitting a cancel timer event from the protocol to the event manager.
+
+                     |              |                  ^
+                     |              |                  |
+                     |              |                  |
+            +--------|--------------|------------------|--------+
+            |        |              |                  |        |
+            |        v              v                  |        |
+            |  +-----------+  +-----------+      +-----------+  |
+            |  | Register  |  |  Cancel   |      |  Trigger  |  |
+            |  |   Timer   |  |   Timer   |      |   Timer   |  |
+            |  +-----------+  +-----------+      +-----------+  |
+            |                                          |        |
+            |                                          |        |
+            |               +--------------------+     |        |
+            |          +--> | timer = poll()     |     |        |
+            |          |    |                    |     |        |
+            |  Advance |    | if timer is ready: |     |        |
+            |   Time   |    | 	 dispatchEvent() | ----+        |
+            |          |    |                    |              |
+            |          +--- |                    |              |
+            |               +--------------------+              |
+            |                                                   |
+            +---------------------------------------------------+
+
+Figure 📍: Timer manager overview
+
+
+### Communication and Configuration
+
+### Discovery Manager
+
+
+## Configuration Manager {#arch-configmanager}
 <!---
 Falar sobre a auto configuração e adaptabilidade em run time
 -->
 
-## Channel Manager {#channelmanager}
+## Channel Manager {#arch-channelmanager}
 Handling communication can prove to be extremely complex due to the different nature of different communication protocols.
 <!---
 Falar sobre o channel manager e a questao do multiplexer
 -->
 
-## Security Manager {#securitymanager}
+## Security Manager {#arch-securitymanager}
 <!---
 Falar sobreo identity manager e essas coisas
 -->
@@ -554,6 +689,8 @@ Colocar aqui aquela parte da main em que se coloca os protocols e se passa a con
 
 Each protocol is exclusively assigned a dedicated thread, which handles received events in a serial fashion by executing their respective callbacks. In a single Babel process, any number of protocols may be executing simultaneously, allowing multiple protocols to cooperate (i.e., multi-threaded execution), while shielding developers from concurrency issues, as all communication between protocols is done via message passing.
 From the developer’s point-of-view, a protocol is responsible for defining the callbacks used to process the different types of events in its queue. The developer registers the callback for each type of event and implements its logic, while Babel handles the events by invoking their appropriate callbacks. While relatively simple, the event-oriented model provided by Babel allows the implementation of complex distributed protocols by allowing the developer to focus almost exclusively on the actual logic of the protocol, with minimal effort on setting up all the additional operational aspects.
+
+This design, although simple, allows developers to have a clear understanding at any time of the evolution of a protocol, without having to worry about complex concurrency mechanisms
 
 # API {#api}
 

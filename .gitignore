@@ -21,3 +21,5 @@ draft-tardis-gmds.xml
 package-lock.json
 report.xml
 !requirements.txt
+!draft-tardis-gfds.html
+
