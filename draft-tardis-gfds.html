@@ -1181,16 +1181,33 @@ This documents specifies a Generic Framework for Building Dynamic Distributed Sy
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-event-manager" class="internal xref">Event Manager</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-protocols" class="internal xref">Protocols</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-configuration-manager" class="internal xref">Configuration Manager</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-event-manager" class="internal xref">Event Manager</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-inter-protocol-interaction" class="internal xref">Inter Protocol Interaction</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-timer-manager" class="internal xref">Timer Manager</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-communication-and-configura" class="internal xref">Communication and Configuration</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.4">
+                    <p id="section-toc.1-1.4.2.2.2.4.1"><a href="#section-4.2.4" class="auto internal xref">4.2.4</a>.  <a href="#name-discovery-manager" class="internal xref">Discovery Manager</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-channel-manager" class="internal xref">Channel Manager</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-configuration-manager" class="internal xref">Configuration Manager</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-security-manager" class="internal xref">Security Manager</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-channel-manager" class="internal xref">Channel Manager</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-security-manager" class="internal xref">Security Manager</a></p>
 </li>
             </ul>
 </li>
@@ -1285,6 +1302,9 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <li class="normal" id="section-2-3.1">
           <p id="section-2-3.1.1">API: Application Programming Interface<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
 </li>
+        <li class="normal" id="section-2-3.2">
+          <p id="section-2-3.2.1">GFDS: Generic Framework for Building Dynamic Distributed Systems<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
+</li>
       </ul>
 </section>
 </div>
@@ -1375,6 +1395,7 @@ def BroadcastData {
   int hopCount,
   Peer origin
 
+  //Omitting serializer
   ...
 }
 
@@ -1414,7 +1435,7 @@ cancelTimer(long: timerID)
               <p id="section-3.2.1-4.2.1"><em>setupTimer</em> setups a timer that will be triggered after a timeout. After the timeout has passed the timer will cease to exist. The function returns an unique timerID that can be used to cancel the timer if needed.<a href="#section-3.2.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.2.1-4.3">
-              <p id="section-3.2.1-4.3.1"><em>periodicSetupTimer</em> setups a timer that will be triggered periodically (as indicated by the <em>period</em> parameter). It is possible to specify a timeout until the first trigger with the <em>first</em> parameter. Akin to <em>setupTimer</em>, this function also returns an unique timerID.<a href="#section-3.2.1-4.3.1" class="pilcrow">¶</a></p>
+              <p id="section-3.2.1-4.3.1"><em>setupPeriodicSetupTimer</em> setups a timer that will be triggered periodically (as indicated by the <em>period</em> parameter). It is possible to specify a timeout until the first trigger with the <em>first</em> parameter. Akin to <em>setupTimer</em>, this function also returns an unique timerID.<a href="#section-3.2.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.2.1-4.4">
               <p id="section-3.2.1-4.4.1"><em>cancelTimer</em> allows to cancel a timer by passing its unique timerID. This can be extremely helpful in cases where a periodic action is no longer needed, or, for example, if a timeout is no longer needed due to the arrival of data. Protocols should be able to setup and cancel timers during their lifecycle.<a href="#section-3.2.1-4.4.1" class="pilcrow">¶</a></p>
@@ -1686,8 +1707,17 @@ def NeighborUpNotification {
 }
 
 def BroadcastData {
-  byte [] data
+  byte [] data,
   long timestamp
+
+  serializer(out):
+    out.writeByteArray(data)
+    out.writeLong(timestamp)
+
+  deserializer(in):
+    data = in.readByteArray()
+    timestamp = in.readLong(in)
+    return BroadcastData(data, timestamp)
 }
 
 def GarbageCollectionTimer {
@@ -1760,78 +1790,213 @@ propagate(Set&lt;Peer&gt; destinations, BroadcastData: broadcastData):
       <h2 id="name-architecture">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
       </h2>
-<div class="alignLeft art-text artwork" id="section-4-1">
+<p id="section-4-1">GFDS aims to simplify the development and management of highly dynamic distributed systems.
+To achieve this, we propose an architecture where great part of the complexity is hidden underneath different layers of abstractions.
+The layers are in charge with different aspects of the system, ranging from inter protocol event dispatch, to guaranteeing secure communication among nodes.
+The architecture overview is depicted in the following diagram:<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4-2">
 <pre>
-     +---------------------------------------------------------+
-     | +--------------+   +--------------+   +--------------+  |
-     | |              |   |              |   |              |  |
-     | |  Protocol 1  |   |  Protocol 2  |...|  Protocol N  |  |
-     | |              |   |              |   |              |  |
-     | +--------------+   +--------------+   +--------------+  |
-     |  | ^                | ^                | ^              |
-     |  | | +-------+      | | +-------+      | | +-------+    |
-     |  | | | Event |      | | | Event |      | | | Event |    |
-     |  | | | Queue |      | | | Queue |      | | | Queue |    |
-     |  | | +-------+      | | +-------+      | | +-------+    |
-     |  | |                | |                | |              |
-     |  v |                v |                v |              |
-     | +----------------------------------------------------+  |
-     | |                                        +---------+ |  |
-     | |                        Event           |  Timer  | |  |
-     | |                       Manager          | Manager | |  |
-     | |                                        +---------+ |  |
-     | +----------------------------------------------------+  |
-     |         ^                                    |          |
-     |         |                                    v          |
-     | +----------------------------------------------------+  |
-     | |                                                    |  |
-     | |                    Configuration                   |  |
-     | |                       Manager                      |  |
-     | |                                                    |  |
-     | +----------------------------------------------------+  |
-     |         ^                                    |          |
-     |         |                                    v          |
-     | +----------------------+       +---------------------+  |
-     | |                      | ----&gt; |                     |  |
-     | |       Channel        |       |      Security       |  |
-     | |       Manager        |       |       Manager       |  |
-     | |                      | &lt;---- |                     |  |
-     | +----------------------+       +---------------------+  |
-     +---------------------------------------------------------+
-                    ^ ^                         ^ ^
-                    | |                         | |
-  &lt;-----------------+ |                         | +---------------&gt;
- &lt;--------------------+                         +------------------&gt;
-                         Incoming and Outgoing
+    +------------------------------------------------------------+
+    |    +------------+    +------------+    +------------+      |
+    |    |            |    |            |    |            |      |
+    |    | Protocol 1 |    | Protocol 2 | .. | Protocol N |      |
+    |    |            |    |            |    |            |      |
+    |    +------------+    +------------+    +------------+      |
+    |     | ^               | ^               | ^                |
+    |     | | +-------+     | | +-------+     | | +-------+      |
+    |     | | | Event |     | | | Event |     | | | Event |      |
+    |  +--|-|-|-------|-----|-|-|-------|-----|-|-|-------|---+  |
+    |  |  | | | Queue |     | | | Queue |     | | | Queue |   |  |
+    |  |  | | +-------+     | | +-------+     | | +-------+   |  |
+    |  |  v |               v |               v |             |  |
+    |  | +-------------------------------------------------+  |  |
+    |  | |                    +-----------+   +---------+  |  |  |
+    |  | |     Event          | Discovery |   |  Timer  |  |  |  |
+    |  | |    Manager         |  Manager  |   | Manager |  |  |  |
+    |  | |                    +-----------+   +---------+  |  |  |
+    |  | +-------------------------------------------------+  |  |
+    |  |       ^  |                            ^  |           |  |
+    |  |       |  v                            |  v           |  |
+    |  | +--------------+              +-------------------+  |  |
+    |  | |              |              |                   |  |  |
+    |  | |              |  ---------&gt;  |   Configuration   |  |  |
+    |  | |              |  &lt;---------  |      Manager      |  |  |
+    |  | |              |              |                   |  |  |
+    |  | |    Channel   |              +-------------------+  |  |
+    |  | |    Manager   |              +-------------------+  |  |
+    |  | |              |              |                   |  |  |
+    |  | |              |  ---------&gt;  |     Security      |  |  |
+    |  | |              |  &lt;---------  |      Manager      |  |  |
+    |  | |              |              |                   |  |  |
+    |  | +--------------+              +-------------------+  |  |
+    |  |                                                      |  |
+    |  |                        Core                          |  |
+    |  +------------------------------------------------------+  |
+    +------------------------------------------------------------+
+                | |                                | |
+                | |                                | |
+    &lt;-----------+ |                                | +------------&gt;
+   &lt;--------------+      Incoming and Outgoing     +---------------&gt;
                               Connections
-</pre><a href="#section-4-1" class="pilcrow">¶</a>
+</pre><a href="#section-4-2" class="pilcrow">¶</a>
 </div>
-<div id="eventmanager">
+<p id="section-4-3">Figure 📍: Framework architecture<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">As stated previously, the base unit of interaction is the protocol. Protocols "live" on top of the stack and developers interact with the framework by specifying protocols, implement their logic and define the proper handlers to receive events (i.e., timers, inter-protocol, etc.) from the framework. This means that, to a developer, the interaction with the other layers is close to none.
+The event manager is in charge of dispatching events to the correct protocols, manage timers, and communicate with the channel manager and configuration manager. Finally, the security manager is responsible for identity management and ensuring secure communication among nodes.
+All of this is encapsulated in what we call the <em>core</em>.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">The <em>core</em> is a centralized competent which coordinates the execution of the different protocols through an event queue. It is separated in different elements, as depicted in Figure ⚠, each responsible for a different task. In the following sub-sections, we specify the different details of each component.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6">This designs allows the framework to make a clear separation of concerns regarding what a developer as to interact with, and what is managed internally.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<div id="arch-protocol">
 <section id="section-4.1">
-        <h3 id="name-event-manager">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-event-manager" class="section-name selfRef">Event Manager</a>
+        <h3 id="name-protocols">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-protocols" class="section-name selfRef">Protocols</a>
         </h3>
+<p id="section-4.1-1">Developers interact with the framework by specifying protocols. Protocols have access to common abstractions and APIs that allows to make use of the tools provided by the framework (i.e., explained in <a href="#protocol" class="auto internal xref">Section 3</a>).<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">Protocols send/receive events to/from the event manager. Each of this events contains information about their type (i.e., request, reply, notification, etc.) and the necessary information to be correctly interpreted by the proper destination (e.g., a request event shall contain the protocol source to the destination can reply to it). Thus, each protocol can be seen as a
+state machine whose state evolves by receiving and processing events.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">In order to achieve this, each protocol has an event queue that orders and serializes incoming events. Each protocol should control its life cycle by advancing "time" in a matter it sees fits (i.e., per clock tick, periodically, etc.). In other words, protocols are in charge of pooling their respective queue and process events by their order of arrival and match the respective event with the registered handler.
+Events emitted by the protocol are sent to the event manager who handles their proper processing and forwarding to the correct destination.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">From the developer’s point-of-view, a protocol is responsible for defining the callbacks used to process the different events in the queue. This means that developers only worry about registering the proper callbacks for each type and implement their logic, while letting the framework handle event management through interaction with the queue.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">Although each protocol contains its own event queue, these are mediated by the event manager, since it is this component responsible to deliver events to each protocol queue, and to forward the events issued by protocols to their correct destination.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">The following diagram depicts a protocol overview, divided by two views.
+A <em>developer view</em> which specifies the environment and elements to be handled by the developer (i.e., setup callbacks, manage protocol state, etc.), and an <em>internal view</em> managed by the framework.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-7">
+<pre>
+    +-------------------------------------------------------------+
+    |                        ----------+                Developer |
+    |                        |         |                   View   |
+    |                        |  State  |                          |
+    |                        |         |                          |
+    |                        +----------                          |
+    |                                                             |
+    |  +---------+        +---------+      +---------+            |
+    |  | +---------+      | +---------+    | +---------+          |
+    |  | | +---------+    | | +---------+  | | +---------+        |
+    |  | | |     | | |    | | |     | | |  | | |     | | |        |
+    |  +-|-|-----+ | |    +-|-|-----+ | |  +-|-|-----+ | |        |
+    |    +-|-------+ |      +-|-------+ |    +-|-------+ |        |
+    |      |      ...|        |      ...|      |      ...|        |
+    |      +---------+        +---------+      +---------+        |
+    |                                                             |
+    |  Request Handlers   Reply Handlers   Notification Handlers  |
+    |                                                             |
+    |           +---------+          +---------+                  |
+    |           | +---------+        | +---------+                |
+    |           | | +---------+      | | +---------+              |
+    |           | | |     | | |      | | |     | | |              |
+    |           +-|-|-----+ | |      +-|-|-----+ | |              |
+    |             +-|-------+ |        +-|-------+ |              |
+    |               |      ...|          |      ...|              |
+    |               +---------+          +---------+              |
+    |                                                             |
+    |           Timer Handlers       Communication                |
+    |                                   Handlers                  |
+    |                                                             |
+    | &lt;---------------------------------------------------------&gt; |
+    |                      +-------------+                        |
+    |               +----- | +---------+ |                        |
+    |         Poll  |      | |  Event  | |                        |
+    |         queue |      | |  Queue  | |                        |
+    |               +----&gt; | +---------+ |               Internal |
+    |                      +-------------+                 View   |
+    +-------------------------------------------------------------+
+</pre><a href="#section-4.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-4.1-8">Figure 📍: Protocol overview<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="configmanager">
+<div id="arch-eventmanager">
 <section id="section-4.2">
-        <h3 id="name-configuration-manager">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-configuration-manager" class="section-name selfRef">Configuration Manager</a>
+        <h3 id="name-event-manager">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-event-manager" class="section-name selfRef">Event Manager</a>
         </h3>
+<p id="section-4.2-1">The event manager is one of the main components of the framework and the bridge that establishes the connection between developers (i.e., protocols)
+and the framework inner workings.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">This said, the event manager is responsible for the following tasks: exchange events between respective protocols (i.e, <em>inter-protocol</em>), forward events coming from the channel and configuration manager to the right protocols, and handle discovery and timers.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">Each protocol has an unique identifier associated to it (i.e., a random identifier issued by the framework or passed on as argument during initialization). During protocol registration, the event manager stores the different identifiers in order to forward events to their respective destination. Moreover, since notifications are meant to ensure one-to-many semantics, the event manager has to maintain the mapping of notifications to subscriptions of the corresponding protocols. With this information we are able to guarantee the proper dispatchment of events to their destination.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">In the upcoming sub sections we will detail the different sub tasks of the event manager.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<div id="inter-protocol-interaction">
+<section id="section-4.2.1">
+          <h4 id="name-inter-protocol-interaction">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-inter-protocol-interaction" class="section-name selfRef">Inter Protocol Interaction</a>
+          </h4>
+<p id="section-4.2.1-1">Inter protocol interactions, in other words, communication between protocols in the same machine, is done with the use of requests, replies and notifications. While request and replies guarantee one-to-one semantics, notifications provide one-to-many semantics with the use of subscriptions.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2">Requests, and their replies, receive a destination protocol. This way, when one of these events is issued, the event manager obtains the protocol from the set of registered protocols and simply adds the event to its queue. This simple but effective design assures that protocols can interact among each other in an efficient way in order to build complexer behaviors through sharing of information.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-3">In contrast, notifications triggers are meant to be delivered to all protocols that are interested in it. To achieve this, the event manager scans its mapping of notifications to subscriptions and transmits to all.<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="channelmanager">
+<div id="timer-manager">
+<section id="section-4.2.2">
+          <h4 id="name-timer-manager">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-timer-manager" class="section-name selfRef">Timer Manager</a>
+          </h4>
+<p id="section-4.2.2-1">The timer manager is a small module that ensures that tasks are triggered at specific time intervals or after a certain amount of time as passed.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-2">Protocols create timers by either invoking <em>setupTimer</em> or <em>setupPeriodicTimer</em>. When doing this, an event is sent by the corresponding protocol to the event manager, which in turn passes it along to the timer manager. The timer manager stores all the timers issued by the different protocols and is in charge of advancing "time" (e.g., clock ticks). When the timer manager detects that a timer as come to its conclusion, it informs the respective protocol that registered it by placing an event in its queue. Its of note that regular timers and periodical timers work in the same manner internally, with their only difference being that one is removed of the timer manager after its finished, while the other remains active until the end of execution of the program.<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-3">Moreover, each timer as an unique identifier associated to it at the moment of creation (i.e., <a href="#protocol-handlers-timer" class="auto internal xref">Section 3.2.1</a>). Protocols can use this identifier to cancel timers and remove it from the timer manager. This can be achieved by emitting a cancel timer event from the protocol to the event manager.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2.2-4">
+<pre>
+                 |              |                  ^
+                 |              |                  |
+                 |              |                  |
+        +--------|--------------|------------------|--------+
+        |        |              |                  |        |
+        |        v              v                  |        |
+        |  +-----------+  +-----------+      +-----------+  |
+        |  | Register  |  |  Cancel   |      |  Trigger  |  |
+        |  |   Timer   |  |   Timer   |      |   Timer   |  |
+        |  +-----------+  +-----------+      +-----------+  |
+        |                                          |        |
+        |                                          |        |
+        |               +--------------------+     |        |
+        |          +--&gt; | timer = poll()     |     |        |
+        |          |    |                    |     |        |
+        |  Advance |    | if timer is ready: |     |        |
+        |   Time   |    |    dispatchEvent() | ----+        |
+        |          |    |                    |              |
+        |          +--- |                    |              |
+        |               +--------------------+              |
+        |                                                   |
+        +---------------------------------------------------+
+</pre><a href="#section-4.2.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-4.2.2-5">Figure 📍: Timer manager overview<a href="#section-4.2.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="communication-and-configuration">
+<section id="section-4.2.3">
+          <h4 id="name-communication-and-configura">
+<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-communication-and-configura" class="section-name selfRef">Communication and Configuration</a>
+        </h4>
+</section>
+</div>
+<div id="discovery-manager">
+<section id="section-4.2.4">
+          <h4 id="name-discovery-manager">
+<a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-discovery-manager" class="section-name selfRef">Discovery Manager</a>
+        </h4>
+</section>
+</div>
+</section>
+</div>
+<div id="arch-configmanager">
 <section id="section-4.3">
-        <h3 id="name-channel-manager">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-channel-manager" class="section-name selfRef">Channel Manager</a>
+        <h3 id="name-configuration-manager">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-configuration-manager" class="section-name selfRef">Configuration Manager</a>
         </h3>
-<p id="section-4.3-1">Handling communication can prove to be extremely complex due to the different nature of different communication protocols.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="securitymanager">
+<div id="arch-channelmanager">
 <section id="section-4.4">
+        <h3 id="name-channel-manager">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-channel-manager" class="section-name selfRef">Channel Manager</a>
+        </h3>
+<p id="section-4.4-1">Handling communication can prove to be extremely complex due to the different nature of different communication protocols.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="arch-securitymanager">
+<section id="section-4.5">
         <h3 id="name-security-manager">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-security-manager" class="section-name selfRef">Security Manager</a>
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-security-manager" class="section-name selfRef">Security Manager</a>
         </h3>
 </section>
 </div>
@@ -1844,6 +2009,7 @@ propagate(Set&lt;Peer&gt; destinations, BroadcastData: broadcastData):
       </h2>
 <p id="section-5-1">Each protocol is exclusively assigned a dedicated thread, which handles received events in a serial fashion by executing their respective callbacks. In a single Babel process, any number of protocols may be executing simultaneously, allowing multiple protocols to cooperate (i.e., multi-threaded execution), while shielding developers from concurrency issues, as all communication between protocols is done via message passing.
 From the developer’s point-of-view, a protocol is responsible for defining the callbacks used to process the different types of events in its queue. The developer registers the callback for each type of event and implements its logic, while Babel handles the events by invoking their appropriate callbacks. While relatively simple, the event-oriented model provided by Babel allows the implementation of complex distributed protocols by allowing the developer to focus almost exclusively on the actual logic of the protocol, with minimal effort on setting up all the additional operational aspects.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">This design, although simple, allows developers to have a clear understanding at any time of the evolution of a protocol, without having to worry about complex concurrency mechanisms<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="api">
